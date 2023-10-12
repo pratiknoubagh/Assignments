@@ -7,7 +7,7 @@ app = Flask(__name__)
 api = Api(app)
 client = MongoClient("mongodb://db:27017/")
 db = client.books_db
-movies = db.movies  # Use 'movies' collection instead of 'books'
+movies = db.movies  
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', type=str, required=True, help="Title cannot be blank")
@@ -21,13 +21,13 @@ class MovieResource(Resource):
         if movie_id:
             movie = movies.find_one({"_id": ObjectId(movie_id)})
             if movie:
-                movie['_id'] = str(movie['_id'])  # Convert ObjectID to string
+                movie['_id'] = str(movie['_id']) 
                 return movie, 200
             return {"message": "Movie not found"}, 404
         else:
             all_movies = list(movies.find())
             for movie in all_movies:
-                movie['_id'] = str(movie['_id'])  # Convert ObjectID to string for all movies
+                movie['_id'] = str(movie['_id']) 
             return all_movies, 200
 
     def post(self):
